@@ -1,0 +1,120 @@
+#: import main SpellKeeper
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import ListItemButton kivy.uix.listview.ListItemButton
+#: import factory kivy.factory
+
+<SchoolListButton>:
+    on_press: app.on_school_selection(self.text)
+
+<SpellListButton>:
+    on_press: app.on_spell_selection(self.text)
+
+<Pages>:
+
+    school_list: school_list_view
+    spell_list: spell_list_view
+    add_to_personal_button: button
+
+    cols: 2
+    padding: 20
+    spacing: 30
+
+    GridLayout:
+        cols: 2
+
+        Label:
+            size_hint_y: .1
+            text: "Schools:"
+
+        Label:
+            size_hint_y: .1
+            text: "Spells:"
+
+        ListView:
+            size_hint_y: .9
+            id: school_list_view
+            adapter:
+                ListAdapter(data=[], cls=main.SchoolListButton)
+
+        ListView:
+            size_hint_y: .9
+            id: spell_list_view
+            adapter:
+                ListAdapter(data=[], cls=main.SpellListButton)
+
+        Button:
+            text: "MASTER"
+            size_hint_y: .1
+            on_press:
+                root.load_schools("master")
+
+        Button:
+            text: "PERSONAL"
+            size_hint_y: .1
+            on_press:
+                root.load_schools("personal")
+
+    BoxLayout:
+        orientation: "vertical"
+
+        GridLayout:
+            cols: 2
+            size_hint_y: .4
+
+            Label:
+                font_size: 20
+                text_size: self.size
+                size_hint_y: .2
+                halign: "left"
+                text: root.spell_stats[0]
+
+            Label:
+                font_size: 15
+                text_size: self.size
+                size_hint_x: .4
+                size_hint_y: .2
+                halign: "left"
+                text: root.spell_stats[1]
+
+            Label:
+                text_size: self.size
+                text: "Level: "+root.spell_stats[2]+"\nCast Time: "+root.spell_stats[3]+"\nRange: "+root.spell_stats[4]+"\nDuration: "+root.spell_stats[6]
+
+            Label:
+                size_hint_x: .3
+                text_size: self.size
+                text: "Classes:\n" + root.spell_stats[10]
+
+        GridLayout:
+            cols:1
+
+            Label:
+                font_size: 15
+                text_size: self.size
+                valign: "top"
+                text: "Components: \n" + root.spell_stats[5]
+
+            Label:
+                font_size: 12
+                text_size: self.size
+                text: "Description:\n" + root.spell_stats[8]
+
+            Label:
+                font_size: 12
+                text_size: self.size
+                text: "Higher Level Bonus:\n" + root.spell_stats[9]
+
+        GridLayout:
+            cols: 2
+            size_hint_y: .2
+
+            Label:
+                text: ""
+            Label:
+                text: ""
+            Label:
+                text: ""
+            Button:
+                id: button
+                text: root.personal_message
+                on_press: root.edit_personal()
